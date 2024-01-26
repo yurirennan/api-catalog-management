@@ -4,6 +4,7 @@ import com.yuri.desafioanotaai.domain.category.dto.create.CategoryDTO;
 import com.yuri.desafioanotaai.domain.category.dto.update.UpdateCategoryDTO;
 import com.yuri.desafioanotaai.domain.category.model.Category;
 import com.yuri.desafioanotaai.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class CategoryController {
 
 
     @PostMapping
-    public ResponseEntity<Category> saveCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Category> saveCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         final Category category = this.categoryService.save(categoryDTO);
 
         return ResponseEntity.ok(category);
@@ -38,7 +39,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") final String categoryId,
-                                                   @RequestBody final UpdateCategoryDTO categoryDTO) {
+                                                   @RequestBody @Valid final UpdateCategoryDTO categoryDTO) {
         final Category category = this.categoryService.updateCategory(categoryId, categoryDTO);
 
         return ResponseEntity.ok(category);
