@@ -13,7 +13,7 @@ public class CreateCatalogException extends RuntimeException implements HttpExce
 
     @Override
     public String getErrorMessage() {
-        return "";
+        return "errors.catalog.create";
     }
 
     @Override
