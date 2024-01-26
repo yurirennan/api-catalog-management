@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  desafio_anotaai_mongo:
+    image: mongo
+    container_name: 'desafio_anotaai_mongo'
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - app_net
+
+  desafio_anotaai_rabbitmq:
+    image: rabbitmq:3.11-management-alpine
+    container_name: 'desafio_anotaai_rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - app_net
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  desafio_anotaai_app:
+    build: .
+    container_name: 'desafio_anotaai_app'
+    ports:
+      - 8080:8080
+    environment:
+      - MONGODB_URL=mongodb://desafio_anotaai_mongo:27017/products-catalog
+      - SPRING_RABBIT_QUEUE_NAME=catalog-emit
+      - SPRING_RABBIT_EXCHANGE_NAME=catalog
+      - SPRING_RABBIT_ROUTING_KEY=catalog
+      - SPRING_RABBITMQ_HOST=desafio_anotaai_rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    depends_on:
+      desafio_anotaai_mongo:
+        condition: service_started
+      desafio_anotaai_rabbitmq:
+        condition: service_healthy
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
