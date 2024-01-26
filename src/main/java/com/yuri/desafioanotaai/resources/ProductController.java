@@ -5,6 +5,7 @@ import com.yuri.desafioanotaai.domain.products.dto.create.out.ResponseCreateProd
 import com.yuri.desafioanotaai.domain.products.dto.update.in.ResquestUpdateProductDTO;
 import com.yuri.desafioanotaai.domain.products.dto.update.out.ResponseUpdateProductDTO;
 import com.yuri.desafioanotaai.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveProduct(@RequestBody final RequestCreateProductDTO requestCreateProductDTO) {
+    public ResponseEntity<Void> saveProduct(@RequestBody @Valid final RequestCreateProductDTO requestCreateProductDTO) {
         this.productService.save(requestCreateProductDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -39,7 +40,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseUpdateProductDTO> updateProduct(@PathVariable("id") final String productId,
-                                                                  @RequestBody final ResquestUpdateProductDTO productDTO) {
+                                                                  @RequestBody @Valid final ResquestUpdateProductDTO productDTO) {
         final ResponseUpdateProductDTO productUpdated = this.productService.update(productId, productDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(productUpdated);
