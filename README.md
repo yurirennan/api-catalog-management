@@ -17,7 +17,7 @@
   Dessa forma, o endpoint de pesquisa do catálogo não precisa buscar informações no banco de dados.
 - Sempre que houver uma alteração no catálogo de produtos, publique essa alteração no tópico "catalog-emit" do Rabbitmq.
 - Implemente um consumidor que ouça alterações de catálogo para um proprietário específico.
-- Quando o consumidor receber uma mensagem, pesquise no banco de dados o catálogo desse proprietário, gere o JSON do catálogo e publique-o e salve localmente.
+- Quando o consumidor receber uma mensagem, pesquise no banco de dados o catálogo desse proprietário, gere o JSON do catálogo e publique-o.
 
 <hr>
 
